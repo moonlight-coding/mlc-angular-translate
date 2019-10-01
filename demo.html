@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- minimal css -->
+    <link href="./node_modules/bootstrap3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- load angularjs library -->
+    <script src="./node_modules/angular/angular.min.js"></script>
+    <!-- load mlc-translate -->
+    <script src="./dist/mlc-translate.js"></script>
+    <!-- load the index angularjs application -->
+    <script src="./demo/script.js"></script>
+  </head>
+  <!-- Launch the MMOApp on this node -->
+  <body ng-app="MyApp" ng-controller="MyCtrl as $ctrl">
+    
+    <h3>Basics</h3>
+    <div mlc-translate="'Hello'"></div>
+    <div mlc-translate="'Hello'" data-group="'my-group'"></div>
+    
+    <h3>Parameters</h3>
+    
+    <h4>Params</h4>
+    <pre>{{ $ctrl.params | json }}</pre>
+    
+    <ul>
+      <li>
+        <div mlc-translate="'Timer value is {{ params.timer }}'" data-group="'my-group'" data-params="{timer: $ctrl.params.timer}"></div>
+      </li>
+      <li>
+        <div mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></div>
+      </li>
+    </ul>
+    
+    <h3>Advanced</h3>
+    <div mlc-translate="'div'" data-group="'my-group'"></div>
+    
+  </body>
+</html>
+
