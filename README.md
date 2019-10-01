@@ -32,6 +32,4 @@ angular.module('MyApp', ['MlcTranslate', 'MlcTranslatePanel']);
 
 ## Configure the service
 
-You must define several abstract methods of the mlcTranslate service:
-
-- ``
+You must define several abstract methods of the mlcTranslate service.

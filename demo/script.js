@@ -1,4 +1,4 @@
-var app = angular.module('MyApp', ['MlcTranslate']);
+var app = angular.module('MyApp', ['MlcTranslate', 'MlcTranslateToolbox']);
 
 app.run(function(mlcTranslate) {
   mlcTranslate.translations = {
@@ -8,7 +8,7 @@ app.run(function(mlcTranslate) {
   };
 });
 
-app.controller('MyCtrl', function($scope) {
+app.controller('MyCtrl', function($scope, mlcTranslate, mlcTranslateToolbox) {
   this.params = {
     timer: 0
   };
@@ -23,5 +23,8 @@ app.controller('MyCtrl', function($scope) {
   };
   
   increaseTimer();
+  
+  this.translations = mlcTranslate.translations;
+  this.toolboxGroups = mlcTranslateToolbox.groups;
   
 });

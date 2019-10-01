@@ -1,0 +1,107 @@
+<div class="mlc-translate-toolbox" ng-if="$ctrl.opened == true">
+  <div class="mlc-translate-head">
+    <div class="row">
+      <div class="col-xs-4">
+        <h3 mlc-translate="'Translation Toolbox'" data-group="'mlc-translate-toolbox'"></h3>
+      </div>
+      <div class="col-xs-3">
+        <div style="height: 5px;"></div>
+        <select ng-model="$ctrl.removeKeysIfDestroy"  ng-change="$ctrl.mlcTranslateToolbox.setRemoveKeysIfDestroy($ctrl.removeKeysIfDestroy)" class="form-control">
+          <option ng-value="true" mlc-translate="'all currently displayed keys'" data-group="'mlc-translate-toolbox'"></option>
+          <option ng-value="false" mlc-translate="'all keys'" data-group="'mlc-translate-toolbox'"></option>
+        </select>
+      </div>
+      <div class="col-xs-3">
+        <div style="height: 5px;"></div>
+        <select ng-model="$ctrl.translateService.locale" ng-change="$ctrl.setLocale($ctrl.translateService.locale);" class="form-control">
+          <option ng-repeat="locale in $ctrl.translateService.availableLocals track by $index" ng-value="locale">{{ locale }}</option>
+        </select>
+      </div>
+      <div class="col-xs-2">
+        <h3 style="cursor: pointer;" ng-click="$ctrl.closeToolbox()"
+            mlc-translate="'Close'" data-group="'mlc-translate-toolbox'"></h3>        
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+  <div class="mlc-translate-body">
+  
+    <button class="btn btn-primary"
+      style="display: block;width: 100%;"
+      ng-if="shown == false"
+      ng-click="show_translations()"
+      mlc-translate="'Afficher les traductions'" data-group="'mlc-translate-toolbox'"></button>
+    <button class="btn btn-default" 
+      style="display: block;width: 100%;"
+      ng-if="shown == true"
+      ng-click="show_translations()"
+      mlc-translate="'Cacher les traductions'" data-group="'mlc-translate-toolbox'"></button>
+    <br />
+  
+    <div class="row" style="padding-bottom: 5px;">
+      <div class="col-xs-4">
+        <label mlc-translate="'Group'" data-group="'mlc-translate-toolbox'"></label>
+      </div>
+      <div class="col-xs-8">
+        <select class="form-control" ng-model="$ctrl.group" ng-change="$ctrl.groupChanged()">
+          <option ng-repeat="(group, _) in $ctrl.mlcTranslateToolbox.groups track by $index" value="{{ group }}">{{ group }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <div ng-if="$ctrl.group != null">
+      <div class="row">
+        <div class="col-xs-4">
+          <label mlc-translate="'Key'" data-group="'mlc-translate-toolbox'"></label>
+        </div>
+        <div class="col-xs-8">
+          <select class="form-control" ng-model="$ctrl.key" ng-change="$ctrl.keyChanged()">
+            <option ng-repeat="(key, _) in $ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations track by $index" value="{{ key }}">{{ key }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div ng-if="$ctrl.key != null">
+      
+      <div class="alert alert-info" ng-if="$ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].parameters.length > 0">
+        <span mlc-translate="'The following keys are available:'" data-group="'mlc-translate-toolbox'"></span>
+        <span ng-repeat="key in $ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].parameters track by $index" 
+          ng-style="{ 'color': ['green', 'blue', 'purple'][$index % 3] }"
+        >{{ key }} </span>
+      </div>
+      
+      <div class="row" ng-if="$ctrl.translateService.history[$ctrl.group][$ctrl.key] != null">
+        <div class="col-xs-4">
+          <label mlc-translate="'Version'" data-group="'mlc-translate-toolbox'"></label> <a ng-click="$ctrl.removeVersion()" mlc-translate="'remove'" data-group="'mlc-translate-toolbox'"></a>
+        </div>
+        <div class="col-xs-8">
+          <select class="form-control" ng-model="$ctrl.version" ng-change="$ctrl.versionChanged()">
+            <option ng-repeat="version in $ctrl.translateService.history[$ctrl.group][$ctrl.key] track by $index" value="{{ $index }}">{{ $index }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4">
+          <label mlc-translate="'Valeur'" data-group="'mlc-translate-toolbox'"></label>
+        </div>
+        <div class="col-xs-8">
+          <textarea class="form-control" 
+                    style="height: 145px;"
+                    ng-model="$ctrl.translateService.translations[$ctrl.group][$ctrl.key]"></textarea>
+        </div>
+      </div>
+      
+      <button class="btn btn-success"
+              ng-click="$ctrl.saveKey()"
+              mlc-translate="'Sauvegarder'" data-group="'mlc-translate-toolbox'"></button>
+    </div>
+    
+  </div>
+  
+</div>
+
+<div class="mlc-translate-toolbox-closed" ng-if="$ctrl.opened == false">
+  <a ng-click="$ctrl.openToolbox()">open</a>
+</div>
