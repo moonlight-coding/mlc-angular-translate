@@ -28,13 +28,13 @@
   
     <button class="btn btn-primary"
       style="display: block;width: 100%;"
-      ng-if="shown == false"
-      ng-click="show_translations()"
+      ng-if="$ctrl.showTranslations == false"
+      ng-click="$ctrl.toggleShowTranslations()"
       mlc-translate="'Afficher les traductions'" data-group="'mlc-translate-toolbox'"></button>
     <button class="btn btn-default" 
       style="display: block;width: 100%;"
-      ng-if="shown == true"
-      ng-click="show_translations()"
+      ng-if="$ctrl.showTranslations == true"
+      ng-click="$ctrl.toggleShowTranslations()"
       mlc-translate="'Cacher les traductions'" data-group="'mlc-translate-toolbox'"></button>
     <br />
   

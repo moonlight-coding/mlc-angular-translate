@@ -20,14 +20,14 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       
       this.toggleShowTranslations = () => {
         
-        if(!this.shown) {
+        if(!this.showTranslations) {
           angular.element(document.querySelector("head")).append(show_elt);
         }
         else {
           show_elt.remove();
         }
         
-        this.shown = !this.shown;  
+        this.showTranslations = !this.showTranslations;  
       };
       
       this.groupChanged = () => {
