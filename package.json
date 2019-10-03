@@ -1,5 +1,5 @@
 {
-  "name": "mlc-angular-translate",
+  "name": "mlc-angularjs-translate",
   "version": "1.0.0",
   "description": "A service for translation with angularjs",
   "main": "index.js",
@@ -28,5 +28,9 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moonlight-coding/mlc-angularjs-translate.git"
   }
 }
