@@ -73,11 +73,12 @@
       
       <div class="row" ng-if="$ctrl.translateService.history[$ctrl.group][$ctrl.key] != null">
         <div class="col-xs-4">
-          <label mlc-translate="'Version'" data-group="'mlc-translate-toolbox'"></label> <a ng-click="$ctrl.removeVersion()" mlc-translate="'remove'" data-group="'mlc-translate-toolbox'"></a>
+          <label mlc-translate="'Version'" data-group="'mlc-translate-toolbox'"></label> 
+          <a class="btn btn-danger" ng-click="$ctrl.removeVersion()" mlc-translate="'remove'" data-group="'mlc-translate-toolbox'"></a>
         </div>
         <div class="col-xs-8">
           <select class="form-control" ng-model="$ctrl.version" ng-change="$ctrl.versionChanged()">
-            <option ng-repeat="version in $ctrl.translateService.history[$ctrl.group][$ctrl.key] track by $index" value="{{ $index }}">{{ $index }}</option>
+            <option ng-repeat="version in $ctrl.translateService.history[$ctrl.group][$ctrl.key] track by $index" ng-value="$index">{{ $index }}</option>
           </select>
         </div>
       </div>

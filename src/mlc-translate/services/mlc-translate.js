@@ -14,37 +14,10 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   this.history = {};
   // project makes possible to separate the translation keys from your public website and admin
   this.project = "project_1"; 
+  this.groups = null; // groups to fetch
   
-  this.getUrl = (locale) => {
-    return "/api/translations?locale=" + locale + "&project=" + this.project + "&history=1";
-  };
-  this.postUrl = () => {
-    return "/api/translation";
-  };
-  this.postRemoveUrl = () => {
-    return "/api/translations/version/remove";
-  };
-  this.postUrlParams = (locale, group, key, value) => {
-    return {
-      "project": this.project,
-      "locale": locale,
-      "group": group,
-      "key": key,
-      "value": value
-    };
-  };
-  
-  /**
-   * Fetch the translation for the specified locale
-   */
-  this.setLocale = (locale) => {
-    return $http.get(this.getUrl(locale)).then(function(response) {
-      service.translations = response.data.keys;
-      service.history = response.data.history;
-      service.locale = locale;
-      return response.data;
-    });
-  };
+  // apiConnection must be an instance of MlcTranslateAbstractApiConnection
+  this.apiConnection = null;
   
   /**************************
    * service implementation
@@ -70,6 +43,18 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
    */
   this.translate = (group, key, parameters = {}) => {
     return $interpolate(service.search(group, key))(parameters);
+  };
+  
+  this.setLocale = (locale) => {
+    return this.apiConnection.getLocale(locale, this.groups, true).then((response) => {
+      this.translations = response.data.translations;
+      this.history = response.data.history;
+      this.locale = locale;
+    });
+  };
+  
+  this.reload = () => {
+    return this.setLocale(this.locale);
   };
   
 });

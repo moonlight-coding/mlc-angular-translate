@@ -36,9 +36,13 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       };
       
       this.keyChanged = () => {
+        
+        if(this.group == null || this.key == null)
+          return;
+        
         if(mlcTranslate.history[this.group] != null && 
            mlcTranslate.history[this.group][this.key] != null)
-          this.version = (mlcTranslate.history[this.group][this.key].length - 1).toString();
+          this.version = mlcTranslate.history[this.group][this.key].length - 1;
         else {
           this.version = "0";
           if(!mlcTranslate.translations[this.group])
@@ -49,31 +53,44 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       
       this.versionChanged = () => {
         mlcTranslate.translations[this.group][this.key] = 
-          mlcTranslate.history[this.group][this.key][this.version];
+          mlcTranslate.history[this.group][this.key][this.version].value;
       };
       
       this.saveKey = () => {
-        var group = this.group;
-        var key = this.key;
-        var value = mlcTranslate.translations[group][key];
-        mlcTranslate.save_translation(group, key, value, () => {
-          this.version = (mlcTranslate.history[this.group][this.key].length - 1).toString();
-        });
+        let locale = mlcTranslate.locale;
+        let group = this.group;
+        let key = this.key;
+        let value = mlcTranslate.translations[group][key];
+        
+        mlcTranslate.apiConnection.createTranslation(locale, group, key, value)
+          .then(() => {
+            return mlcTranslate.reload();
+          })
+          .then(() => {
+            this.version = mlcTranslate.history[this.group][this.key].length - 1;
+          })
+        ;
       };
       
       this.removeVersion = () => {
         var group = this.group;
         var key = this.key;
         var version = this.version;
+        let versionId = mlcTranslate.history[this.group][this.key][this.version].id;
         
-        mlcTranslate.removeVersion(group, key, version, () => {
-          if(mlcTranslate.history[this.group] != null) {
-            this.version = (mlcTranslate.history[this.group][this.key].length - 1).toString();
-          }
-          else {
-            this.version = null;
-          }
-        });
+        mlcTranslate.apiConnection.removeTranslation(versionId)
+          .then(() => {
+            return mlcTranslate.reload();
+          })
+          .then(() => {
+            if(mlcTranslate.history[this.group] != null) {
+              this.version = mlcTranslate.history[this.group][this.key].length - 1;
+            }
+            else {
+              this.version = null;
+            }
+          })
+        ;
       };
       
       
@@ -87,7 +104,7 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       
       this.setLocale = function(locale) {
         mlcTranslate.setLocale(locale).then(() => {
-          this.key_change();
+          this.keyChanged();
         });
       };
       
