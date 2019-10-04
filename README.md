@@ -7,6 +7,8 @@ There are 2 libraries:
 - mlc-angular-translate.(min.)js : the translation service & the translation directive
 - mlc-angular-translate-panel.(min.)js: adds support of the translation panel
 
+## Demo
+
 ## Installation
 
 ```
