@@ -12,33 +12,63 @@
     <script src="./mlc-translate-toolbox.js"></script>
     <!-- load the index angularjs application -->
     <script src="./script.js"></script>
+    <title>mlc-angularjs-translate</title>
   </head>
   <!-- Launch the MMOApp on this node -->
   <body ng-app="MyApp" ng-controller="MyCtrl as $ctrl">
     <div class="container">
       
+      <h1 style="text-align:center;">mlc-angularjs-translate</h1>
       <h2>Usage</h2>
       
       <h3>Basics</h3>
-      <div mlc-translate="'Hello'"></div>
-      <div mlc-translate="'Hello'" data-group="'my-group'"></div>
+      
+      <h4>Default group</h4>
+      
+      <div class="row">
+        <div class="col-xs-6">
+          <div mlc-translate="'Hello'"></div>
+        </div>
+        <div class="col-xs-6">
+          <code-sample>{{ $ctrl.samples['1'] }}</code-sample>
+        </div>
+      </div>
+      
+      <h4>Specified group</h4>
+      
+      <div class="row">
+        <div class="col-xs-6">
+          <div mlc-translate="'Hello'" data-group="'my-group'"></div>
+        </div>
+        <div class="col-xs-6">
+          <code-sample>{{ $ctrl.samples['2'] }}</code-sample>
+        </div>
+      </div>
       
       <h3>Parameters</h3>
       
-      <h4>Params</h4>
-      <pre>{{ $ctrl.params | json }}</pre>
+      <h4>$ctrl.params</h4>
+      <pre>{{ $ctrl.params }}</pre>
       
-      <ul>
-        <li>
+      <h4>long version</h4>
+      <div class="row">
+        <div class="col-xs-6">
           <div mlc-translate="'Timer value is {{ params.timer }}'" data-group="'my-group'" data-params="{timer: $ctrl.params.timer}"></div>
-        </li>
-        <li>
-          <div mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></div>
-        </li>
-      </ul>
+        </div>
+        <div class="col-xs-6">
+          <code-sample>{{ $ctrl.samples['3'] }}</code-sample>
+        </div>
+      </div>
       
-      <h3>Advanced</h3>
-      <div mlc-translate="'div'" data-group="'my-group'"></div>
+      <h4>shorter version</h4>
+      <div class="row">
+        <div class="col-xs-6">
+          <div mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></div>
+        </div>
+        <div class="col-xs-6">
+          <code-sample>{{ $ctrl.samples['4'] }}</code-sample>
+        </div>
+      </div>
       
       <h2>Internals</h2>
       
