@@ -1,6 +1,0 @@
-/node_modules
-/dist
-/tmp
-/github-pages/*
-!/github-pages/index.html
-!/github-pages/script.js
