@@ -9,6 +9,8 @@ There are 2 libraries:
 
 ## Demo
 
+https://moonlight-coding.github.io/mlc-angularjs-translate/
+
 ## Installation
 
 ```
