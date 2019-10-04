@@ -6,6 +6,7 @@ const babel = require('gulp-babel');
 const less = require('gulp-less');
 const cssmin = require('gulp-cssmin');
 const rename = require('gulp-rename');
+const merge = require('merge-stream');
 
 // ============================================
 //            MLC TRANSLATE
@@ -85,6 +86,20 @@ gulp.task('mlc-translate-toolbox', gulp.parallel(
   'mlc-translate-toolbox.less'
 ));
 
+// github-pages folder
+gulp.task('github-pages', function() {
+  let dist = gulp.src('./dist/**/*')
+    .pipe(gulp.dest('./github-pages'));
+  
+  let angular = gulp.src('./node_modules/angular/angular.min.js')
+    .pipe(gulp.dest('./github-pages/angular'));
+  
+  let bootstrap = gulp.src('./node_modules/bootstrap3/dist/**/*')
+    .pipe(gulp.dest('./github-pages/bootstrap3'));
+    
+  return merge(dist, angular, bootstrap);
+});
+
 // ============================================
 //                DEFAULT TASK
 // ============================================
@@ -93,5 +108,18 @@ gulp.task('mlc-translate-toolbox', gulp.parallel(
  * The default task is run by `gulp` without parameters.
  * We build the libraries
  */ 
-gulp.task('default', gulp.parallel('mlc-translate', 'mlc-translate-toolbox'));
+gulp.task('default', gulp.series(
+  gulp.parallel('mlc-translate', 'mlc-translate-toolbox'),
+  'github-pages' // build the github-pages folder
+));
 
+
+// ============================================
+//                Github Pages
+// ============================================
+var ghPages = require('gulp-gh-pages');
+ 
+gulp.task('github-pages.deploy', function() {
+  return gulp.src('./github-pages/**/*')
+    .pipe(ghPages());
+});
