@@ -22,7 +22,6 @@ class MlcTranslateLocalStorageCache
   }
   
   setGroup(project, group, content) {
-    console.log("setGroup() " + project, group, content)
     localStorage.setItem(this.buildKey(project, group), JSON.stringify(content));
   }
 }
