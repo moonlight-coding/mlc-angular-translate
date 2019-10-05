@@ -1,10 +1,10 @@
 class MlcTranslateApiConnection extends MlcTranslateAbstractApiConnection
 {
-  constructor($http, project = 'default', rootUrl = '.') {
+  constructor($http, mlcTranslate, rootUrl = '.') {
     super();
     
     this.$http = $http;
-    this.project = project;
+    this.mlcTranslate = mlcTranslate;
     this.rootUrl = rootUrl;
   }
   
@@ -18,7 +18,7 @@ class MlcTranslateApiConnection extends MlcTranslateAbstractApiConnection
   
   buildPostParams(locale, group, key, value) {
     return {
-      "project": this.project,
+      "project": this.mlcTranslate.project,
       "locale": locale,
       "group": group,
       "key": key,
@@ -31,7 +31,7 @@ class MlcTranslateApiConnection extends MlcTranslateAbstractApiConnection
    */
   getLocale(locale, groups = null, history = false) {
     let $http = this.$http;
-    let project = this.project;
+    let project = this.mlcTranslate.project;
     
     return $http.post(this.buildURL('/query'), {
       project, locale, groups, history
@@ -40,7 +40,7 @@ class MlcTranslateApiConnection extends MlcTranslateAbstractApiConnection
   
   createTranslation(locale, group, key, value) {
     let $http = this.$http;
-    let project = this.project;
+    let project = this.mlcTranslate.project;
     
     return $http.post(this.buildURL('/translations'), {
       project, locale, group, key, value
@@ -49,7 +49,7 @@ class MlcTranslateApiConnection extends MlcTranslateAbstractApiConnection
   
   removeTranslation(id) {
     let $http = this.$http;
-    let project = this.project;
+    let project = this.mlcTranslate.project;
     
     return $http.delete(this.buildURL('/translations/' + id));
   }

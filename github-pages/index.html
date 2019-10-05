@@ -19,6 +19,9 @@
     <div class="container">
       
       <h1 style="text-align:center;">mlc-angularjs-translate</h1>
+      
+      <div class="btn btn-default" ng-class="{active: $ctrl.toolboxEnabled}" ng-click="$ctrl.toggleToolbox()">Toolbox</div>
+      
       <h2>Usage</h2>
       
       <h3>Basics</h3>
@@ -82,8 +85,9 @@
       <h3>Toolbox groups</h3>
       <pre>{{ $ctrl.toolboxGroups | json }}</pre>
       -->
-    
-      <div mlc-translate-toolbox></div>
+      <div ng-if="$ctrl.toolboxEnabled">
+        <div mlc-translate-toolbox></div>
+      </div>
     </div>
   </body>
 </html>

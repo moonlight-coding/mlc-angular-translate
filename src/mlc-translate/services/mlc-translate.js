@@ -14,10 +14,16 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   this.history = {};
   // project makes possible to separate the translation keys from your public website and admin
   this.project = "project_1"; 
-  this.groups = null; // groups to fetch
+  // groups to fetch, null means 'all groups'
+  // If the groups are not specified, the cache will not be able to work..
+  this.groups = null;
+  // must the query load the history too ? to enable only if the toolbox is available
+  this.queryHistory = false;
   
   // apiConnection must be an instance of MlcTranslateAbstractApiConnection
   this.apiConnection = null;
+  
+  let cache = new MlcTranslateLocalStorageCache();
   
   /**************************
    * service implementation
@@ -46,8 +52,39 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   };
   
   this.setLocale = (locale) => {
-    return this.apiConnection.getLocale(locale, this.groups, true).then((response) => {
-      this.translations = response.data.translations;
+    
+    // load the groups from the cache
+    let groupTimestamps = null;
+    
+    // if the groups are specified
+    if(this.groups != null) {
+      groupTimestamps = [];
+      
+      for(let groupName of this.groups) {
+        let group = cache.getGroup(this.project, groupName);
+        
+        if(group == null)
+          groupTimestamps.push([groupName, null]);
+        else {
+          groupTimestamps.push([groupName, group.timestamp]);
+          this.translations[groupName] = group.translations;
+        }
+      }
+    }
+    
+    // query to the api, the cached groups which are not to update will not be sent.
+    // the groups which have changed, are sent, even if empty
+    return this.apiConnection.getLocale(locale, groupTimestamps, this.queryHistory).then((response) => {
+      // store in the cache the updated groups
+      for(let groupName in response.data.translations) {
+        let group = response.data.translations[groupName];
+        let timestamp = response.data.timestamps[groupName];
+        
+        cache.setGroup(this.project, groupName, {translations: group, timestamp: timestamp});
+        this.translations[groupName] = group;
+      }
+      
+      // history is not cached
       this.history = response.data.history;
       this.locale = locale;
     });
