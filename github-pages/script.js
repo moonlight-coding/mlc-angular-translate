@@ -1,6 +1,6 @@
 var app = angular.module('MyApp', ['MlcTranslate', 'MlcTranslateToolbox']);
 
-app.run(function($http, mlcTranslate) {
+app.run(function($http, mlcTranslate, mlcTranslateToolbox) {
   mlcTranslate.apiConnection = new MlcTranslateApiConnection($http, mlcTranslate, 'http://localhost:3000');
   mlcTranslate.availableLocals = ["en_GB", "fr_FR"];
   // groups SHOULD be specified to minimize the amount of translation which are fetched
@@ -9,6 +9,8 @@ app.run(function($http, mlcTranslate) {
   mlcTranslate.queryHistory = true;
   // load the fr_FR translations from the API
   mlcTranslate.setLocale("fr_FR");
+  
+  mlcTranslateToolbox.opened = true;
 });
 
 app.controller('MyCtrl', function($scope, mlcTranslate, mlcTranslateToolbox, Samples) {

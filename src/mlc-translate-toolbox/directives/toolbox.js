@@ -8,7 +8,6 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       this.mlcTranslateToolbox = mlcTranslateToolbox;
       this.translateService = mlcTranslate;
       this.showTranslations = false;
-      this.opened = true;
       
       this.group = null;
       this.key = null;
@@ -95,11 +94,11 @@ angular.module('MlcTranslateToolbox').directive('mlcTranslateToolbox', function(
       
       
       this.closeToolbox = () => {
-        this.opened = false;
+        mlcTranslateToolbox.opened = false;
       };
       
       this.openToolbox = () => {
-        this.opened = true;
+        mlcTranslateToolbox.opened = true;
       };
       
       this.setLocale = function(locale) {

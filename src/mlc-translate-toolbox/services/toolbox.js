@@ -1,5 +1,7 @@
 angular.module('MlcTranslateToolbox').service('mlcTranslateToolbox', function($rootScope) {
   
+  this.opened = false;
+  
   // will contain the count of each key, per group
   this.groups = {};
   // 
