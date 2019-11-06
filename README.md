@@ -13,6 +13,14 @@ https://moonlight-coding.github.io/mlc-angularjs-translate/
 
 ## Installation
 
+### From NPM
+
+```
+npm i --save mlc-angularjs-translate
+```
+
+### From Git
+
 ```
 # install gulp globally
 npm install -g gulp
@@ -79,8 +87,14 @@ You must have an instance of `mlc-translate-server` running (`http://localhost:3
 ```
 app.run(function(mlcTranslate, $http) {
   
+  // the project name
+  mlcTranslate.project = 'default';
+  
   // define the apiConnection
-  mlcTranslate.apiConnection = new MlcTranslateApiConnection($http, 'default', 'http://localhost:3000');
+  mlcTranslate.apiConnection = new MlcTranslateApiConnection($http, mlcTranslate, 'http://localhost:3000');
+  
+  // ask for history (for the toolbox)
+  mlcTranslate.queryHistory = true;
   
   // define the available locals
   mlcTranslate.availableLocals = ["en_GB", "fr_FR"];
