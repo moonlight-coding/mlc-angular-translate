@@ -13,7 +13,7 @@ class MlcTranslateLocalConnection extends MlcTranslateAbstractApiConnection
    * Get the required groups
    */
   getLocale(locale, groups = null, history = false) {
-    return this.translationsPerLocale[locale];
+    return Promise.resolve(this.translationsPerLocale[locale]);
   };
   
   createTranslation(locale, group, key, value) {
