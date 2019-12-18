@@ -63,10 +63,9 @@
     </div>
     
     <div ng-if="$ctrl.key != null">
-      
-      <div class="alert alert-info" ng-if="$ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].parameters.length > 0">
+      <div class="alert alert-info" ng-if="$ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].params.length > 0">
         <span mlc-translate="'The following keys are available:'" data-group="'mlc-translate-toolbox'"></span>
-        <span ng-repeat="key in $ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].parameters track by $index" 
+        <span ng-repeat="key in $ctrl.mlcTranslateToolbox.groups[$ctrl.group].translations[$ctrl.key][0].params track by $index" 
           ng-style="{ 'color': ['green', 'blue', 'purple'][$index % 3] }"
         >{{ key }} </span>
       </div>
