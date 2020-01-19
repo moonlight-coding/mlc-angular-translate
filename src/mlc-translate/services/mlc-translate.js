@@ -48,7 +48,7 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
    * Translate the key with the specified parameters
    */
   this.translate = (group, key, parameters = {}) => {
-    return $interpolate(service.search(group, key))(parameters);
+    return $interpolate(this.search(group, key))(parameters);
   };
   
   this.setLocale = (locale) => {
