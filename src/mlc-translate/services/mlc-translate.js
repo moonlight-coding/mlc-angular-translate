@@ -48,6 +48,9 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
    * Translate the key with the specified parameters
    */
   this.translate = (group, key, parameters = {}) => {
+    if(key == null)
+      return null;
+    
     return $interpolate(this.search(group, key))(parameters);
   };
   

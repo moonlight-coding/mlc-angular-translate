@@ -73,6 +73,25 @@
         </div>
       </div>
       
+      <h4>input placeholder</h4>
+      <div class="row">
+        <div class="col-xs-6">
+          <input type="text" class="form-control" 
+                 mlc-translate-placeholder="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params" />
+        </div>
+        <div class="col-xs-6">
+          <code-sample>{{ $ctrl.samples['5'] }}</code-sample>
+        </div>
+      </div>
+      
+      <h4>Select values</h4>
+      <select>
+        <option ng-value="null" mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></option>
+        <option ng-value="1" mlc-translate="'Test {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></option>
+        <option ng-value="2" mlc-translate="'Test test {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></option>
+        <option ng-value="3" mlc-translate="'{{ _.timer * 2 }}'" data-group="'my-group'" data-params="$ctrl.params"></option>
+      </select>
+      
       <h2>Internals</h2>
       
       <h3>Translations</h3>

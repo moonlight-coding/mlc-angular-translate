@@ -69,5 +69,6 @@ app.value('Samples', {
   '1': `<div mlc-translate="'Hello'"></div>`,
   '2': `<div mlc-translate="'Hello'" data-group="'my-group'"></div>`,
   '3': `<div mlc-translate="'Timer value is {{ params.timer }}'" data-group="'my-group'" data-params="{timer: $ctrl.params.timer}"></div>`,
-  '4': `<div mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></div>`
+  '4': `<div mlc-translate="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params"></div>`,
+  '5': `<input mlc-translate-placeholder="'Timer value is {{ _.timer }}'" data-group="'my-group'" data-params="$ctrl.params" type="text" class="form-control" />`
 });
