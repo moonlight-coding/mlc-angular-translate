@@ -1,4 +1,4 @@
-angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScope, $interpolate) {
+angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScope, $interpolate, $timeout) {
   
   /**************************************************
    * Inputs and overridable variables of the service
@@ -20,6 +20,12 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   // must the query load the history too ? to enable only if the toolbox is available
   this.queryHistory = false;
   
+  // if autoDetectGroups is enabled, the groups field will be updated dynamically 
+  // each time a translation directive is instancied, if the group isn't present
+  this.autoDetectGroups = false;
+  this.autoDetectGroupsToLoad = [];
+  this.canLaunchAutodetectRequest = true;
+  
   // apiConnection must be an instance of MlcTranslateAbstractApiConnection
   this.apiConnection = null;
   
@@ -34,7 +40,12 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
    * If the translation is not found, returns the key
    */
   this.search = (group, key) => {
-
+    
+    if(group == null || key == null)
+      return key;
+    
+    this.declareUsedGroup(group);
+    
     if(group in this.translations) {
       if(key in this.translations[group]) {
         return this.translations[group][key];
@@ -56,6 +67,14 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   
   this.setLocale = (locale) => {
     
+    // if autodetect is enabled, don't start to fetch the groups directly
+    if(this.autoDetectGroups && this.groups.length == 0) {
+      this.locale = locale;
+      return;
+    }
+    
+    this.canLaunchAutodetectRequest = false;
+    
     // load the groups from the cache
     let groupTimestamps = null;
     
@@ -64,7 +83,7 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
       groupTimestamps = [];
       
       for(let groupName of this.groups) {
-        let group = cache.getGroup(this.project, groupName);
+        let group = cache.getGroup(this.project, locale, groupName);
         
         if(group == null)
           groupTimestamps.push([groupName, null]);
@@ -83,18 +102,65 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
         let group = response.data.translations[groupName];
         let timestamp = response.data.timestamps[groupName];
         
-        cache.setGroup(this.project, groupName, {translations: group, timestamp: timestamp});
+        cache.setGroup(this.project, locale, groupName, {translations: group, timestamp: timestamp});
         this.translations[groupName] = group;
       }
       
       // history is not cached
       this.history = response.data.history;
       this.locale = locale;
+      
+      this.canLaunchAutodetectRequest = true;
+      this.launchAutoDetectRequestIfRequired();
+    }).catch((error) => {
+      
+      console.error(error);
+      
+      this.canLaunchAutodetectRequest = true;
+      this.launchAutoDetectRequestIfRequired();
     });
   };
   
   this.reload = () => {
     return this.setLocale(this.locale);
+  };
+  
+  // declare 
+  this.declareUsedGroup = (group) => {
+    
+    if(!this.autoDetectGroups)
+      return;
+    
+    if(this.groups.indexOf(group) != -1)
+      return;
+    
+    if(this.autoDetectGroupsToLoad.indexOf(group) != -1)
+      return;
+    
+    this.autoDetectGroupsToLoad.push(group);
+    
+    // launch a request
+    this.launchAutoDetectRequestIfRequired();
+  };
+  
+  this.launchAutoDetectRequestIfRequired = () => {
+    if(!this.canLaunchAutodetectRequest || this.autoDetectGroupsToLoad.length == 0) {
+      return;
+    }
+    
+    this.canLaunchAutodetectRequest = false;
+    
+    // will launch a request in 20ms to get several groups at once if possible
+    $timeout(() => {
+      if(this.groups === null)
+        this.groups = [];
+      
+      this.groups = this.groups.concat(this.autoDetectGroupsToLoad);
+      this.autoDetectGroupsToLoad = [];
+      
+      // when setLocale finishes, canLaunchAutodetectRequest is set to true
+      this.reload();
+    }, 20);
   };
   
 });

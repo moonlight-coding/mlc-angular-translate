@@ -6,12 +6,12 @@ class MlcTranslateLocalStorageCache
   constructor() {
   }
   
-  buildKey(project, group) {
-    return `mlc-translate[${project}][${group}]`;
+  buildKey(project, locale, group) {
+    return `mlc-translate[${project}][${locale}][${group}]`;
   }
   
-  getGroup(project, group) {
-    let g = localStorage.getItem(this.buildKey(project, group));
+  getGroup(project, locale, group) {
+    let g = localStorage.getItem(this.buildKey(project, locale, group));
     
     if(g) {
       return JSON.parse(g);
@@ -21,7 +21,7 @@ class MlcTranslateLocalStorageCache
     return null;
   }
   
-  setGroup(project, group, content) {
-    localStorage.setItem(this.buildKey(project, group), JSON.stringify(content));
+  setGroup(project, locale, group, content) {
+    localStorage.setItem(this.buildKey(project, locale, group), JSON.stringify(content));
   }
 }
