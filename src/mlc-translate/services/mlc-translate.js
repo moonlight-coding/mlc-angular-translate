@@ -67,6 +67,8 @@ angular.module('MlcTranslate').service('mlcTranslate', function($http, $rootScop
   
   this.setLocale = (locale) => {
     
+    this.translations = {};
+    
     // if autodetect is enabled, don't start to fetch the groups directly
     if(this.autoDetectGroups && this.groups.length == 0) {
       this.locale = locale;
